@@ -1,0 +1,7 @@
+name,solute_smiles,solvent1_smiles,solvent2_smiles
+ibuprofen,CC(C)Cc1ccc(cc1)C(C)C(=O)O,O,CCO
+ibuprofen,CC(C)Cc1ccc(cc1)C(C)C(=O)O,O,CC(C)=O
+aspirin,CC(=O)Oc1ccccc1C(=O)O,O,CCO
+caffeine,CN1C=NC2=C1C(=O)N(C(=O)N2C)C,O,CCO
+paracetamol,CC(=O)Nc1ccc(O)cc1,O,CCO
+naproxen,COc1ccc2cc(ccc2c1)C(C)C(=O)O,O,CC#N

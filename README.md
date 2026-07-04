@@ -1,4 +1,4 @@
-# JA-NET
+# JA-NET: mixed-solvent solubility from molecular structure
 
 A Jouyban-Acree structured neural network that predicts a solute's solubility across a binary-solvent composition curve from molecular structure alone (solute + two solvent SMILES).
 
@@ -49,6 +49,15 @@ python experiments/interpretability.py  # recovering the JA coefficients from st
 python experiments/discovery.py         # ranking systems by predicted cosolvency synergy
 ```
 
+### Predict on your own systems
+
+```bash
+python screen.py candidates.csv
+```
+
+`candidates.csv` needs columns `solute_smiles`, `solvent1_smiles`, `solvent2_smiles` (and optionally `name`, `temperature_K`); see `example_candidates.csv`.
+The script writes `candidates_predictions.csv`, ranked by predicted cosolvency synergy, with the recovered Jouyban-Acree coefficients and an ensemble-uncertainty estimate. It runs from the shipped model in `models/`, so no training data necessary.
+
 ## Results
 
 Leave-binary-system-out (systems held out entirely; 5 repeated disjoint splits):
@@ -70,6 +79,7 @@ notebooks/      demo notebook
 tests/          smoke test
 results/        predicted cosolvency-synergy targets
 data/           dataset instructions (data not included)
+screen.py       predict cosolvency synergy for your own solute-solvent systems
 ```
 
 ## License
