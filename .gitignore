@@ -4,6 +4,7 @@ data/*.xlsx
 data/*.npz
 # trained weights (regenerable)
 models/*.pt
+!models/ja_ens_*.pt
 # regenerable intermediates
 *_summary.json
 # python
