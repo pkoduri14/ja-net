@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "janet-cosolvency"
+version = "0.1.0"
+description = "A Jouyban-Acree-structured neural network for mixed-solvent solubility from molecular structure."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["numpy", "pandas", "scikit-learn", "torch", "scipy", "matplotlib", "rdkit"]
+
+[tool.setuptools]
+packages = ["janet"]

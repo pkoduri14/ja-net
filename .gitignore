@@ -1,0 +1,19 @@
+# external / large data (see data/README.md)
+data/*.csv
+data/*.xlsx
+data/*.npz
+# trained weights (regenerable)
+models/*.pt
+# regenerable intermediates
+*_summary.json
+# python
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+# logs
+*.log
+*.err
+*.output
