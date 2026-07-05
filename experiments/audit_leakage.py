@@ -29,8 +29,6 @@ fps = {}
 for s in uniq_sol:
     m = Chem.MolFromSmiles(s)
     fps[s] = rdMolDescriptors.GetMorganFingerprintAsBitVect(m, 2, nBits=2048) if m else None
-trS, teS = next(GroupShuffleSplit(1, test_size=0.2, random_state=0).split(np.arange(len(uniq_sol)),
-                groups=np.arange(len(uniq_sol))))  # placeholder; real solute split below
 # real leave-solute-out split on rows, then take unique held-out solutes
 trs, tes = next(GroupShuffleSplit(1, test_size=0.2, random_state=0).split(idx, groups=D.soluteid))
 train_sol = sorted(set(D.soluteid[trs])); test_sol = sorted(set(D.soluteid[tes]))

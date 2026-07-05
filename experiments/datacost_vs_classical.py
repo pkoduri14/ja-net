@@ -101,7 +101,7 @@ print(f"\nCROSSOVER k* = {crossover}  (fewest measured points at which the class
 
 # ---- aggregate figure ----
 ks = [k for k in K_LIST if k in summary]
-cvals = [summary[k]["classical"] for k in ks]; jval = summary[ks[0]]["janet"]
+cvals = [summary[k]["classical"] for k in ks]
 jline = np.mean([summary[k]["janet"] for k in ks])
 plt.figure(figsize=(7, 4.6))
 plt.plot(ks, cvals, "o-", color="#b5651d", lw=2, label="Classical Jouyban–Acree fit (k measured points)")

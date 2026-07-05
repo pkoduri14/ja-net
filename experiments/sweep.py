@@ -28,7 +28,7 @@ for k, vals in grid.items():
 print("\n# searching (val MAE):")
 res = []
 for name, c in configs:
-    m = mae(val, J.train_ja(D, train, val, seed=0, epochs=35, **c))
+    m = mae(val, J.train_ja(D, train, val, seed=0, epochs=35, vgroups=D.sysid, **c))
     res.append((m, name, c)); print(f"  {name:12s} val MAE {m:.4f}")
 res.sort()
 best_m, best_name, best = res[0]
@@ -36,7 +36,7 @@ print(f"\nBEST on VAL: {best_name}  (val MAE {best_m:.4f})\n  config {best}")
 
 # FINAL: best config, 3-seed, trained on full original train set -> single TEST readout
 fit = orig_tr
-pj = np.mean([J.train_ja(D, fit, test, seed=s, epochs=45, **best) for s in (0, 1, 2)], 0)
+pj = np.mean([J.train_ja(D, fit, test, seed=s, epochs=45, vgroups=D.sysid, **best) for s in (0, 1, 2)], 0)
 pc = J.train_concat(D, fit, test)
 g = HistGradientBoostingRegressor(max_iter=500, learning_rate=0.05, l2_regularization=1.0, random_state=0)
 g.fit(D.Xcat[fit], D.y[fit]); pg = g.predict(D.Xcat[test])
@@ -44,5 +44,4 @@ rmse = lambda p: np.sqrt(mean_squared_error(D.y[test], p))
 print("\n===== FINAL TEST (leave-system-out, untouched) =====")
 for nm, p in [("CONCAT-GBDT", pg), ("CONCAT-MLP", pc), ("JA-NET tuned (3-seed)", pj)]:
     print(f"  {nm:22s} MAE {mae(test, p):.3f}   RMSE {rmse(p):.3f}")
-print(f"  (untuned JA-NET baseline was MAE 0.298 / RMSE 0.525 on this split)")
 print(f"  tuned config: {best}")

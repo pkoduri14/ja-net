@@ -58,7 +58,6 @@ print(f"base rate of strongly-synergistic (top-quartile) systems: {base:.0%}\n")
 print("=== hypothesis-engine test: rank by structure-predicted synergy, check the measured hit-rate ===")
 order = df.sort_values("pred", ascending=False).reset_index(drop=True)
 for k in (10, 20, 50):
-    p_at_k = hi.reindex(order.index)[:k].values  # align
     p_at_k = order.iloc[:k].meas.ge(df.meas.quantile(0.75)).mean()
     print(f"  precision@{k:<3d} {p_at_k:.0%}   enrichment {p_at_k/base:.2f}x over random")
 

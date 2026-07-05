@@ -29,7 +29,7 @@ SOLV = {"water": "O", "ethanol": "CCO", "methanol": "CO", "isopropanol": "CC(C)O
 slogp = {k: Crippen.MolLogP(Chem.MolFromSmiles(v)) for k, v in SOLV.items()}
 # candidate solvent pairs: water + each organic, plus a few organic-organic blends
 pairs = [("water", o) for o in SOLV if o != "water"]
-pairs += [("ethanol", "ethyl acetate"), ("ethanol", "acetone"), ("acetone", "n-hexane") if False else ("methanol", "acetonitrile"),
+pairs += [("ethanol", "ethyl acetate"), ("ethanol", "acetone"), ("methanol", "acetonitrile"),
           ("ethanol", "1,4-dioxane"), ("acetone", "ethyl acetate"), ("DMSO", "acetonitrile")]
 
 nets = []

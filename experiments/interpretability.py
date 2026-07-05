@@ -18,7 +18,7 @@ net = J.JANet(D.fdim, D.tdim); net.load_state_dict(torch.load("models/ja_interp.
 t = torch.tensor
 
 # per held-out system: data-fit J0,J1,J2 (keep only well-conditioned fits) ; model-predict C0,C1,C2
-Jf, Cp, names, dropped = [], [], [], 0
+Jf, Cp, dropped = [], [], 0
 for s in set(D.sysid[test]):
     m = np.where(D.sysid == s)[0]
     x1, x2 = D.x1[m], D.x2[m]
@@ -35,7 +35,7 @@ for s in set(D.sysid[test]):
     with torch.no_grad():
         _, _, _, C = net(t(D.SOLn[i0][None]), t(D.V1n[i0][None]), t(D.V2n[i0][None]),
                          t(D.Tfn[i0][None]), t(D.x1[i0][None]), t(D.x2[i0][None]))
-    Jf.append(coef[2:5]); Cp.append(C.numpy()[0]); names.append(s)
+    Jf.append(coef[2:5]); Cp.append(C.numpy()[0])
 Jf, Cp = np.array(Jf), np.array(Cp)
 print(f"\n{len(Jf)} held-out systems with stable JA fits (R2>0.9); dropped {dropped} ill-conditioned")
 

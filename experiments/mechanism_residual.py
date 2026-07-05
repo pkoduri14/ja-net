@@ -92,7 +92,6 @@ print("\n== did JA-NET learn the sharper rule? (predicted C0 vs the residual fea
 for f in ["polMismatch", "centrality", "centrality_x_gap"]:
     r, _ = spearmanr(df[f], df.predC0); print(f"   C0 vs {f:16s} rho={r:+.3f}")
 # partial signal: does centrality predict synergy AFTER removing polMismatch?
-from numpy.polynomial import polynomial as _p
 res_syn = df.syn - np.poly1d(np.polyfit(df.polMismatch, df.syn, 1))(df.polMismatch)
 res_cen = df.centrality - np.poly1d(np.polyfit(df.polMismatch, df.centrality, 1))(df.polMismatch)
 rp, pp = spearmanr(res_cen, res_syn)

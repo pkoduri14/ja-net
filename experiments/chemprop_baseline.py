@@ -52,8 +52,6 @@ def build(ix):
 
 tr_c, te_c = build(tr), build(te)
 yscale = tr_c[0].normalize_targets()
-for c in te_c: pass
-te_c[0].Y = te_c[0].Y  # test targets left raw; we unscale preds
 xdscale = tr_c[0].normalize_inputs("X_d")
 te_c[0].normalize_inputs("X_d", xdscale)
 tr_ds, te_ds = data.MulticomponentDataset(tr_c), data.MulticomponentDataset(te_c)
@@ -62,8 +60,6 @@ te_dl = data.build_dataloader(te_ds, batch_size=256, num_workers=0, shuffle=Fals
 
 mp = nn.MulticomponentMessagePassing([nn.BondMessagePassing() for _ in range(3)], n_components=3)
 agg = nn.MeanAggregation()
-ffn = nn.RegressionFFN(input_dim=mp.output_dim + xd.shape[1], output_transform=yscale.inverse_transform_module()
-                       if hasattr(yscale, "inverse_transform_module") else None)
 from chemprop.nn.transforms import UnscaleTransform
 ffn = nn.RegressionFFN(input_dim=mp.output_dim + xd.shape[1],
                        output_transform=UnscaleTransform.from_standard_scaler(yscale))
@@ -79,7 +75,6 @@ cp_mae = mean_absolute_error(d.y.values[te], pred); cp_rmse = np.sqrt(mean_squar
 print(f"\nChemProp D-MPNN:  MAE {cp_mae:.3f}  RMSE {cp_rmse:.3f}")
 if not SMOKE:
     import janet as J
-    Dj = J.load_features()
     # align the subsample rows to janet's D by sysid+x1+T is complex; instead retrain JA-NET on this exact subset
     # quick: GBDT on simple concat features for reference on THIS split
     from rdkit import Chem
@@ -99,7 +94,6 @@ if not SMOKE:
     g = HistGradientBoostingRegressor(max_iter=500, learning_rate=0.05, l2_regularization=1.0, random_state=0)
     g.fit(X[tr], d.y.values[tr]); pg = g.predict(X[te])
     # JA-NET on the SAME subsample + split (fair three-way)
-    import janet as J
     from types import SimpleNamespace
     sm, ss = SOL.mean(0), SOL.std(0) + 1e-6; vm = np.vstack([V1, V2]).mean(0); vs = np.vstack([V1, V2]).std(0) + 1e-6
     Tf = np.stack([d.TK, 1000.0 / d.TK, np.log(d.TK)], 1); Tm, Ts = Tf.mean(0), Tf.std(0) + 1e-6
